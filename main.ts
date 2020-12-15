@@ -150,3 +150,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function(sprite: Sprite, o
     otherSprite.destroy()
     info.changeScoreBy(1)
 })
+
+
+game.onUpdateInterval(30, function() {
+    duck.x = duck.x -1
+})
