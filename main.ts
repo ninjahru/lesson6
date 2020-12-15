@@ -3,8 +3,11 @@ scene.setBackgroundColor(12)
 let duck: Sprite = null 
 let animal: Sprite = null 
 let right = true 
+let food: Sprite = null
 info.setScore(0)
 info.setLife(3)
+
+info.startCountdown(30)
 
 duck =  sprites.create(img`
     3 3 . . . . . . . b 5 b . . . .
@@ -67,7 +70,7 @@ game.onUpdateInterval(1000, function() {
         . f d d d d d b d d f f f .
         . f d f f f d f f d f . . .
         . f f . . f f . . f f . . .
-    `,SpriteKind.Food)
+    `,SpriteKind.Enemy)
     animal.setPosition(150, Math.randomRange(0,120))
     animal.setVelocity(-20, 0)
  
@@ -111,9 +114,39 @@ game.onUpdateInterval(1000, function() {
    
 })
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function(sprite: Sprite, otherSprite: Sprite) {
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function(sprite: Sprite, otherSprite: Sprite) {
 
    
     info.changeLifeBy(-1)
     sprite.setPosition(0, 0)
+})
+
+game.onUpdateInterval(1000, function() {
+    food = sprites.create(img`
+        . . . 6 6 6 6 6 6 6 6 6 6 . . .
+        . 6 6 6 7 7 7 7 7 7 7 7 6 6 6 .
+        . 6 7 7 7 7 7 7 7 7 7 7 7 7 6 .
+        6 7 7 7 7 7 7 7 7 7 7 7 7 7 7 6
+        6 7 7 7 7 7 7 7 7 7 7 7 7 7 7 6
+        6 7 6 7 7 7 7 7 7 7 7 7 7 6 7 6
+        8 6 7 7 7 7 7 7 7 7 7 7 7 7 6 8
+        8 7 7 7 7 7 7 7 7 7 7 7 7 7 7 8
+        6 7 6 7 7 7 6 7 7 7 7 6 7 7 7 6
+        6 8 6 7 7 6 7 7 7 6 7 7 6 6 8 6
+        8 6 6 7 6 6 7 7 6 6 6 7 6 6 6 8
+        8 6 8 6 6 6 7 6 6 6 6 6 8 6 6 8
+        8 8 6 6 8 6 6 6 8 6 6 6 8 8 8 8
+        8 e 6 e e 8 6 6 8 8 6 8 8 8 e 8
+        8 e e e e e 6 e 8 8 e e 8 e e f
+        f e e e e f 8 e e 8 e e e e e f
+    `,SpriteKind.Food)
+    food.setPosition(150, Math.randomRange(0,120))
+    food.setVelocity(-20, 0)
+ 
+   
+})
+
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function(sprite: Sprite, otherSprite: Sprite) {
+    otherSprite.destroy()
+    info.changeScoreBy(1)
 })
